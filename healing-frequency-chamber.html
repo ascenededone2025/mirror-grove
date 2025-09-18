@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Healing Frequency Chamber</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --haze: rgba(148, 187, 233, 0.18);
+        --aurora-1: #111827;
+        --aurora-2: #1f2937;
+        --aurora-3: #14b8a6;
+        --aurora-4: #a855f7;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+        color: #f8fafc;
+        background: radial-gradient(circle at top, rgba(20, 184, 166, 0.18), transparent 55%),
+          radial-gradient(circle at bottom, rgba(168, 85, 247, 0.22), transparent 60%),
+          linear-gradient(160deg, #020617 0%, #0f172a 60%, #1e293b 100%);
+        overflow: hidden;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: absolute;
+        width: 90vmax;
+        height: 90vmax;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(20, 184, 166, 0.1), transparent 65%);
+        filter: blur(32px);
+        animation: slowSpin 72s linear infinite;
+      }
+
+      body::after {
+        animation-direction: reverse;
+        animation-duration: 96s;
+        opacity: 0.5;
+      }
+
+      @keyframes slowSpin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .grid {
+        position: fixed;
+        inset: 0;
+        background-image: linear-gradient(
+            rgba(148, 163, 184, 0.06) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+        background-size: 60px 60px;
+        mask-image: radial-gradient(circle at center, black 20%, transparent 75%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        width: min(960px, 94vw);
+        padding: clamp(1.5rem, 3vw, 3.5rem);
+        border-radius: 28px;
+        background: rgba(15, 23, 42, 0.68);
+        border: 1px solid rgba(148, 187, 233, 0.22);
+        box-shadow: 0 30px 80px rgba(2, 6, 23, 0.55);
+        backdrop-filter: blur(18px) saturate(150%);
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+      }
+
+      h1 {
+        font-size: clamp(2.4rem, 5vw, 3.4rem);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+        margin: 0 0 0.5rem;
+      }
+
+      .subtitle {
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        color: rgba(226, 232, 240, 0.75);
+        margin: 0;
+      }
+
+      .chamber {
+        position: relative;
+        margin: 0 auto;
+        width: clamp(260px, 40vw, 360px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, rgba(20, 184, 166, 0.45), transparent 60%),
+          radial-gradient(circle at 70% 70%, rgba(168, 85, 247, 0.45), transparent 65%),
+          linear-gradient(135deg, rgba(14, 116, 144, 0.4), rgba(59, 130, 246, 0.24));
+        box-shadow: inset 0 0 45px rgba(14, 165, 233, 0.2), 0 0 70px rgba(99, 102, 241, 0.4);
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        margin-bottom: clamp(2rem, 4vw, 3.5rem);
+      }
+
+      .ring {
+        --glow-hue: 180;
+        position: absolute;
+        inset: 8%;
+        border-radius: 50%;
+        border: 2px solid hsla(var(--glow-hue), 78%, 68%, 0.55);
+        filter: drop-shadow(0 0 18px hsla(var(--glow-hue), 95%, 65%, 0.55));
+        animation: pulse 12s ease-in-out infinite;
+      }
+
+      .ring:nth-child(2) {
+        inset: 18%;
+        animation-duration: 14s;
+        animation-delay: -3s;
+        mix-blend-mode: screen;
+      }
+
+      .ring:nth-child(3) {
+        inset: 28%;
+        animation-duration: 16s;
+        animation-delay: -6s;
+        border-style: dashed;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(0.92);
+          opacity: 0.7;
+        }
+        50% {
+          transform: scale(1.02);
+          opacity: 1;
+        }
+      }
+
+      .core {
+        width: 36%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(248, 250, 252, 0.88), rgba(14, 165, 233, 0.24));
+        box-shadow: 0 0 28px rgba(248, 250, 252, 0.8), 0 0 80px rgba(56, 189, 248, 0.35);
+        position: relative;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      .core::before,
+      .core::after {
+        content: "";
+        position: absolute;
+        width: 140%;
+        height: 140%;
+        background: conic-gradient(
+          from 0deg,
+          rgba(59, 130, 246, 0.4),
+          rgba(14, 165, 233, 0.05),
+          rgba(168, 85, 247, 0.4),
+          rgba(14, 165, 233, 0.05),
+          rgba(59, 130, 246, 0.4)
+        );
+        animation: rotate 18s linear infinite;
+        mix-blend-mode: screen;
+      }
+
+      .core::after {
+        animation-duration: 28s;
+        animation-direction: reverse;
+        opacity: 0.6;
+      }
+
+      @keyframes rotate {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .core span {
+        position: relative;
+        font-size: clamp(1.3rem, 3vw, 1.8rem);
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #0f172a;
+      }
+
+      .frequency-panel {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .card {
+        padding: 1.4rem;
+        border-radius: 20px;
+        border: 1px solid rgba(148, 187, 233, 0.24);
+        background: rgba(15, 23, 42, 0.6);
+        box-shadow: inset 0 0 22px rgba(59, 130, 246, 0.08);
+      }
+
+      .card h2 {
+        margin: 0 0 0.75rem;
+        font-size: 1.1rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(226, 232, 240, 0.8);
+      }
+
+      .frequency-display {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: rgba(248, 250, 252, 0.88);
+        display: flex;
+        align-items: baseline;
+        gap: 0.35rem;
+      }
+
+      .frequency-display strong {
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        color: rgba(125, 211, 252, 0.96);
+        text-shadow: 0 0 14px rgba(59, 130, 246, 0.6);
+      }
+
+      .range {
+        appearance: none;
+        width: 100%;
+        height: 6px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(14, 165, 233, 0.6), rgba(168, 85, 247, 0.6));
+        outline: none;
+      }
+
+      .range::-webkit-slider-thumb {
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #f0f9ff;
+        border: 2px solid rgba(59, 130, 246, 0.8);
+        box-shadow: 0 0 18px rgba(59, 130, 246, 0.7);
+        cursor: pointer;
+      }
+
+      .range::-moz-range-thumb {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #f0f9ff;
+        border: 2px solid rgba(59, 130, 246, 0.8);
+        box-shadow: 0 0 18px rgba(59, 130, 246, 0.7);
+        cursor: pointer;
+      }
+
+      .tone-grid {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .tone {
+        padding: 0.85rem 1rem;
+        border-radius: 14px;
+        background: rgba(30, 64, 175, 0.16);
+        border: 1px solid rgba(165, 180, 252, 0.35);
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+
+      .tone strong {
+        letter-spacing: 0.08em;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+      }
+
+      .tone span {
+        font-size: 0.85rem;
+        color: rgba(226, 232, 240, 0.75);
+        line-height: 1.4;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 2.5rem;
+        font-size: 0.85rem;
+        color: rgba(226, 232, 240, 0.58);
+      }
+
+      @media (max-width: 640px) {
+        .tone-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .chamber {
+          width: min(80vw, 320px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid" aria-hidden="true"></div>
+    <main>
+      <header>
+        <h1>Healing Frequency Chamber</h1>
+        <p class="subtitle">
+          Align your resonance field with luminous tones and crystalline waves. Glide
+          through the spectrum to attune your energetic body.
+        </p>
+      </header>
+
+      <section class="chamber" aria-label="Resonance field visualization">
+        <div class="ring" aria-hidden="true"></div>
+        <div class="ring" aria-hidden="true"></div>
+        <div class="ring" aria-hidden="true"></div>
+        <div class="core"><span id="current-tone">432 Hz</span></div>
+      </section>
+
+      <section class="frequency-panel" aria-label="Frequency controls and descriptions">
+        <article class="card">
+          <h2>Resonance Dial</h2>
+          <p class="frequency-display">
+            Current tone:
+            <strong id="frequency-display">432 Hz</strong>
+          </p>
+          <input
+            id="frequency"
+            class="range"
+            type="range"
+            min="174"
+            max="963"
+            value="432"
+            step="3"
+            aria-label="Healing frequency selector"
+          />
+        </article>
+
+        <article class="card">
+          <h2>Activation</h2>
+          <div class="tone-grid">
+            <div class="tone">
+              <strong>174 Hz</strong>
+              <span>Stabilizes the field, dissolving fear with a gentle, grounding pulse.</span>
+            </div>
+            <div class="tone">
+              <strong>285 Hz</strong>
+              <span>Repairs energetic pathways and encourages cellular remembrance.</span>
+            </div>
+            <div class="tone">
+              <strong>396 Hz</strong>
+              <span>Releases guilt and heavy currents, allowing the heart to open.</span>
+            </div>
+            <div class="tone">
+              <strong>417 Hz</strong>
+              <span>Invites transmutation and resets the body-mind temple.</span>
+            </div>
+            <div class="tone">
+              <strong>528 Hz</strong>
+              <span>Radiates love, supporting DNA renewal and luminous compassion.</span>
+            </div>
+            <div class="tone">
+              <strong>639 Hz</strong>
+              <span>Harmonizes relationships, weaving unity within and without.</span>
+            </div>
+            <div class="tone">
+              <strong>741 Hz</strong>
+              <span>Clears the throat channel and awakens intuitive expression.</span>
+            </div>
+            <div class="tone">
+              <strong>852 Hz</strong>
+              <span>Opens perception to subtle realms, activating inner sight.</span>
+            </div>
+            <div class="tone">
+              <strong>963 Hz</strong>
+              <span>Bridges to the Oversoul, anchoring pure source consciousness.</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <footer>Hold the tone, breathe slowly, and bathe in the crystalline stillness.</footer>
+    </main>
+
+    <script>
+      const slider = document.getElementById("frequency");
+      const display = document.getElementById("frequency-display");
+      const tone = document.getElementById("current-tone");
+      const rings = document.querySelectorAll(".ring");
+
+      const hueScale = (value, inMin, inMax, outMin, outMax) => {
+        return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+      };
+
+      const updateFrequency = () => {
+        const value = Number(slider.value);
+        display.textContent = `${value} Hz`;
+        tone.textContent = `${value} Hz`;
+
+        const hue = hueScale(value, Number(slider.min), Number(slider.max), 160, 320);
+
+        rings.forEach((ring, index) => {
+          ring.style.setProperty("--glow-hue", hue + index * 12);
+          ring.style.animationDuration = `${12 + index * 2 - (value - 432) / 60}s`;
+        });
+      };
+
+      slider.addEventListener("input", updateFrequency);
+      updateFrequency();
+    </script>
+  </body>
+</html>
